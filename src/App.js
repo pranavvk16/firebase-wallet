@@ -15,15 +15,18 @@ function App() {
 
   const [key, getkey] = useState("");
 
+  const [wholedata, getwholedata] = useState([]);
   //adding todo and the expences to the database and update the balance
 
   function adddata() {
     getdata([...data, { money, text }])
     getkey(JSON.stringify(date).slice(1, 11))
     setbalance((prev) => prev - money)
+    getwholedata([...wholedata, { key: data }])
   }
 
   console.log(data);
+  console.log(wholedata);
   console.log(key);
   return (
     <div className="App">
