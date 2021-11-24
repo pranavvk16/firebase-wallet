@@ -4,11 +4,18 @@ import Calendar from 'react-calendar';
 
 function App() {
   const [balance, setbalance] = useState(5000);
-  const [text, gettext] = useState("");
+
+  const [text, gettext] = useState("");  //todo and the expences
   const [money, getmoney] = useState(0);
-  const [data, getdata] = useState([]);
+
+  const [data, getdata] = useState([]); //database
+
   const [date, onChange] = useState(new Date());
+
   const [key, getkey] = useState("");
+
+  //adding todo and the expences to the database and update the balance
+  
   function adddata() {
     getdata([...data, { money, text }])
     getkey(JSON.stringify(date).slice(1, 11))
