@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import './App.css';
 import Calendar from 'react-calendar';
+import { Input, Button } from '@mui/material';
 
 function App() {
   const [balance, setbalance] = useState(5000);
@@ -15,7 +16,7 @@ function App() {
   const [key, getkey] = useState("");
 
   //adding todo and the expences to the database and update the balance
-  
+
   function adddata() {
     getdata([...data, { money, text }])
     getkey(JSON.stringify(date).slice(1, 11))
@@ -44,9 +45,9 @@ function App() {
         </div>
         <div className="expenses">
           <div className="container"><span className="date">{date.getDate()}/{date.getMonth()}</span><br />
-            Details<input onChange={(e) => gettext(e.target.value)} type="text" />
-            ₹<input onChange={(e) => getmoney(e.target.value)} type="number" />
-            <button onClick={adddata}>Add</button>
+            Details<Input placeholder="Movies,Outting..." id="textinputs" onChange={(e) => gettext(e.target.value)} type="text" />
+            ₹<Input id="expenseinput" onChange={(e) => getmoney(e.target.value)} type="number" />
+            <Button onClick={adddata} variant="contained">Add</Button>
             <hr />
           </div>
         </div>

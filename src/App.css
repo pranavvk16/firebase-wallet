@@ -36,20 +36,12 @@ span{
 .expenses{
   width: 100%;
   padding: 15px;
-  background-color: rgb(212, 51, 22);
+  background-color: rgb(255, 255, 255);
 } 
-input[type="text"]{
-  border: none;
-  border-bottom: 1px solid black;
+#textinputs{
+  margin-left: 11px;
 }
-input[type="number"]{
-  width:65px;
-}
-input{  
-  margin-inline: 10px;
-  padding-block: 4px;
-}
-.date{
-  font-size: 30px;
-  font-weight: bolder;
+#expenseinput{
+  width: 60px;
+  margin-right: 11px;
 }
