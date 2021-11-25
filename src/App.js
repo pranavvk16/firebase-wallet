@@ -1,7 +1,7 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import './App.css';
 import Calendar from 'react-calendar';
-import { Input, Button } from '@mui/material';
+import { Input, Button } from  '@mui/material';
 
 function App() {
   const [balance, setbalance] = useState(5000);
@@ -15,25 +15,25 @@ function App() {
 
   const [key, getkey] = useState("");
 
-  const [wholedata, getwholedata] = useState([]);
   //adding todo and the expences to the database and update the balance
 
   function adddata() {
     getdata([...data, { money, text }])
     getkey(JSON.stringify(date).slice(1, 11))
     setbalance((prev) => prev - money)
-    getwholedata([...wholedata, { key: data }])
+    // getwholedata([...wholedata, { key: "dat }])
   }
 
-  console.log(data);
-  console.log(wholedata);
-  console.log(key);
+  useEffect(() => {
+    console.log(data);
+    console.log(key);
+  }, [data, key]);
+
+
   return (
     <div className="App">
       <div className="header">
-        <div className="username">
-          User1
-        </div>
+        <div className="username">User1</div>
         <div className="balance">
           Balance : <span>{balance}</span>
         </div>
