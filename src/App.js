@@ -1,18 +1,18 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./App.css";
 import Calendar from "react-calendar";
 import { Input, Button } from "@mui/material";
 import { db } from "./firebase";
+import { doc, getDoc, setDoc } from "firebase/firestore";
 
 function App() {
+  //pranav work
   const [balance, setbalance] = useState(5000);
 
   const [text, gettext] = useState(""); //todo and the expences
   const [money, getmoney] = useState(0);
 
   const [data, getdata] = useState([]); //database
-
-  const [date, onChange] = useState(new Date());
 
   const [key, getkey] = useState("");
 
@@ -25,11 +25,10 @@ function App() {
     setbalance((prev) => prev - money);
     getwholedata([...wholedata, { key: data }]);
   }
-
-  console.log(db);
-  console.log(data);
-  console.log(wholedata);
-  console.log(key);
+  // console.log(db);
+  // console.log(data);
+  // console.log(wholedata);
+  // console.log(key);
   return (
     <div className="App">
       <div className="header">
@@ -40,7 +39,13 @@ function App() {
       </div>
       <div className="content">
         <div className="calander">
-          <Calendar onChange={onChange} value={date} minDetail="month" />
+          <Calendar
+            onChange={(date) => {
+              setDate(date, console.log(date));
+            }}
+            value={date}
+            minDetail="month"
+          />
         </div>
         <div className="expenses">
           <div className="container">
