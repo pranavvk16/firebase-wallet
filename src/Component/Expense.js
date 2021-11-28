@@ -26,6 +26,9 @@ function Expense(props) {
               Add
             </Button>
             <hr />
+            {/* <div className="expense-list">
+              {props.data.map((item, index) => }}
+            </div> */}
           </div>
         </div>
     )

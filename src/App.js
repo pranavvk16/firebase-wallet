@@ -16,21 +16,21 @@ function App() {
 
   const [date, onChange] = useState(new Date());
 
-  const [key, getkey] = useState("");
+  // const [key, getkey] = useState("");
 
   //adding todo and the expences to the database and update the balance
 
   function adddata() {
     getdata([...data, { money, text }]);
-    getkey(JSON.stringify(date).slice(1, 11));
+    // getkey(JSON.stringify(date).slice(1, 11));
     setbalance((prev) => prev - money);
     // getwholedata([...wholedata, { key: data }]);
   }
 
-  console.log(db);
-  // console.log(data);
-  // console.log(wholedata);
-  console.log(key);
+  // console.log(db);
+  console.log(data);  
+  console.log(date);
+  // console.log(key);
   return (
     <div className="App">
       <Header balance={balance}/>
@@ -38,7 +38,7 @@ function App() {
         <div className="calander">
           <Calendar onChange={onChange} value={date} minDetail="month" />
         </div>
-        <Expense adddata={adddata} getmoney={getmoney} gettext={gettext} date={date}/>
+        <Expense data={data} adddata={adddata} getmoney={getmoney} gettext={gettext} date={date}/>
       </div>
     </div>
   );
