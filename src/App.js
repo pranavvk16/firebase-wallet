@@ -1,7 +1,7 @@
 import { useState } from "react";
 import "./App.css";
 import Calendar from "react-calendar";
-import { db } from "./firebase";
+// import { db } from "./firebase";
 import Header from "./Component/Header";
 import Expense from "./Component/Expense";
 
@@ -36,7 +36,7 @@ function App() {
       <Header balance={balance}/>
       <div className="content">
         <div className="calander">
-          <Calendar onChange={onChange} value={date} minDetail="month" />
+          <Calendar title="Calander" onChange={onChange} value={date} minDetail="month" />
         </div>
         <Expense data={data} adddata={adddata} getmoney={getmoney} gettext={gettext} date={date}/>
       </div>
