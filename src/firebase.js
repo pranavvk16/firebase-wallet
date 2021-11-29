@@ -13,20 +13,4 @@ const firebaseConfig = {
 };
 
 initializeApp(firebaseConfig);
-
 export const db = getFirestore();
-const [date, setDate] = useState(new Date());
-// const [colRef, setColRef] = useState(null);
-useEffect(() => {
-  const docRef = doc(db, "data", date.toString());
-  getDoc(docRef).then((doc) => {
-    if (doc.data() === undefined) {
-      setDoc(docRef, { title: "hello" + date.getTime() });
-      getDoc(docRef).then((doc) => {
-        console.log(doc.data(), doc.id);
-      });
-    } else {
-      console.log(doc.data(), doc.id, "present");
-    }
-  });
-}, [date]);
