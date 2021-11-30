@@ -5,7 +5,7 @@ import Expense from "./Component/Expense";
 import { db } from "./firebase";
 import {
   doc,
-  getDoc,
+  // getDoc,
   getDocs,
   setDoc,
   collection,
@@ -30,13 +30,13 @@ function App() {
 
   const getFlag = (date) => {
     if (
-      date.getFullYear() >= new Date().getFullYear() &&
-      date.getMonth() + 1 >= new Date().getMonth() + 1 &&
-      date.getDate() >= new Date().getDate()
+      date.getFullYear() <= new Date().getFullYear() &&
+      date.getMonth() + 1 <= new Date().getMonth() + 1 &&
+      date.getDate() <= new Date().getDate()
     ) {
-      return true;
-    } else {
       return false;
+    } else {
+      return true;
     }
   };
 

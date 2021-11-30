@@ -5,7 +5,7 @@ function Header({ data }) {
     <div className="header">
       <div className="username">User</div>
       <div className="balance">
-        Balance :{" "}
+        Total Expenses :{" "}
         <span>
           {data.length > 0
             ? data.reduce((acc, curr) => {
