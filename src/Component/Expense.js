@@ -21,7 +21,7 @@ function Expense({
     <div className="expenses">
       <div className="container">
         <span className="date">
-          {date.getDate()}/{date.getMonth()}
+          {date.getDate()}/{date.getMonth() + 1}
         </span>
         <br />
         Details
