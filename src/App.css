@@ -1,0 +1,43 @@
+:root {
+  --gradient: linear-gradient(90deg, rgb(233, 143, 233), #88d3d3);
+}
+.landingpage {
+  width: 100vw;
+  display: flex;
+  flex-direction: row;
+  height: 100vh;
+  color: rgb(238, 0, 0);
+}
+.carousel {
+  width: 70vw;
+  height: 100vh;
+}
+.google_auth {
+  width: 30vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.paper {
+  width: 100%;
+  height: 99.2vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: auto;
+  background-image: var(--gradient);
+  animation: bg-animation 25s infinite;
+}
+.paperinndercontainer {
+  display: flex;
+  flex-direction: column;
+}
+@keyframes bg-animation {
+  0% {
+    background-position: left;
+  }
+  50% {
+    background-position: right;
+  }
+}

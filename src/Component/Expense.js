@@ -40,7 +40,7 @@ function Expense({
             name="expense"
             onChange={handleChange}
           />
-          <Button variant="contained" type="Submit" disabled={!flag}>
+          <Button ml="122" variant="contained" type="Submit" disabled={!flag}>
             Add
           </Button>
         </form>
