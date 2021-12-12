@@ -1,5 +1,7 @@
-import React from "react";
+import { React, useState } from "react";
 import { Input, Button } from "@mui/material";
+import Popup from "./Popup";
+import { Picker, MonthBox } from 'react-month-picker'
 
 function Expense({
   date,
@@ -17,14 +19,19 @@ function Expense({
       return false;
     }
   };
+
+  const [isOpen, setIsOpen] = useState(false);
+
+  const togglePopup = () => {
+    setIsOpen(!isOpen);
+  }
   return (
     <div className="expenses">
       <div className="container">
         <span className="date">
-          {date.getDate()}/{date.getMonth() + 1}
+          Expenses on- <i >{date.getDate()}/{date.getMonth() + 1}</i>
         </span>
         <br />
-        Details
         <form onSubmit={(event) => onHandelSubmit(event)}>
           <Input
             placeholder="Movies,Outting..."
@@ -40,10 +47,17 @@ function Expense({
             name="expense"
             onChange={handleChange}
           />
-          <Button ml="122" variant="contained" type="Submit" disabled={!flag}>
+          <Button padding={12} variant="contained" type="Submit" disabled={!flag}>
             Add
           </Button>
         </form>
+        <input
+          type="button"
+          value="Click to Open Popup"
+          onClick={togglePopup}
+        />{isOpen && <Popup
+          handleClose={togglePopup}
+        />}
         <hr />
         <div className="expense-list">
           {/*displaying the list of todo */}
@@ -54,6 +68,7 @@ function Expense({
                 <div key={id}>
                   <span>{task}</span> :<span>{expense}</span>:
                   <Button
+                    padding={12}
                     variant="contained"
                     onClick={() => updateTask(id, {})}
                   >
@@ -61,6 +76,7 @@ function Expense({
                   </Button>
                   :
                   <Button
+                    padding={12}
                     variant="contained"
                     onClick={() => deleteTask(id)}
                     disabled={!flag}

@@ -24,13 +24,11 @@ span {
 }
 
 .content {
-  background-color: blue;
   width: 100%;
   display: flex;
 }
 .calander {
   width: max-content;
-  background-color: rgb(9, 10, 105);
 }
 .expenses {
   width: 100%;

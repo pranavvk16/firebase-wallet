@@ -1,6 +1,6 @@
 import React from 'react'
 import Carousel from 'react-material-ui-carousel'
-import { Paper, Button, Typography } from '@mui/material'
+import { Paper, Typography } from '@mui/material'
 import "../App.css";
 import { GoogleLogin } from 'react-google-login';
 
@@ -13,6 +13,10 @@ function LandingPage() {
         {
             name: "Expense Tracker",
             description: "Track all your expenses at on place"
+        },
+        {
+            name: "Todo",
+            description: "Track all your todo at on place"
         }
     ]
     function Item(props) {
@@ -20,8 +24,8 @@ function LandingPage() {
             <Paper width={100}>
                 <div className="paper">
                     <div className="paperinndercontainer">
-                        <Typography variant="h1">{props.item.name}</Typography>
-                        <Typography variant="h2">{props.item.description}</Typography>
+                        <Typography ml={1} variant="h1">{props.item.name}</Typography>
+                        <Typography ml={1} variant="h2">{props.item.description}</Typography>
                     </div>
                 </div>
             </Paper >
