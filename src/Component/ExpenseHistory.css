@@ -1,0 +1,18 @@
+.history {
+	min-width: 100vw;
+	min-height: 98vh;
+	overflow: hidden;
+}
+.filterbar {
+	width: 100%;
+	height: min-content;
+	margin: 0 auto;
+	padding: 0.25rem;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+.underline {
+	width: 100%;
+	border: 0.25px solid #aaa;
+}
