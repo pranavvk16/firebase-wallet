@@ -1,53 +1,92 @@
-import React from 'react'
-import Carousel from 'react-material-ui-carousel'
-import { Paper, Button, Typography } from '@mui/material'
+import React, { useState } from "react";
+import Carousel from "react-material-ui-carousel";
+import { Paper, Button, Typography } from "@mui/material";
 import "../App.css";
-import { GoogleLogin } from 'react-google-login';
+import { auth, provider } from "../firebase";
+import { signInWithPopup } from "firebase/auth";
+import { Link } from "react-router-dom";
+import { signOut } from "firebase/auth";
 
-function LandingPage() {
-    var items = [
-        {
-            name: "Wallet",
-            description: "A Digital Wallet for the Modern World"
-        },
-        {
-            name: "Expense Tracker",
-            description: "Track all your expenses at on place"
-        }
-    ]
-    function Item(props) {
-        return (
-            <Paper width={100}>
-                <div className="paper">
-                    <div className="paperinndercontainer">
-                        <Typography variant="h1">{props.item.name}</Typography>
-                        <Typography variant="h2">{props.item.description}</Typography>
-                    </div>
-                </div>
-            </Paper >
-        )
-    }
-    return (
-        <div className="landingpage">
-            <div className="carousel">
-                <Carousel indicators={false}>
-                    {
-                        items.map((item, i) => <Item key={i} item={item} />)
-                    }
-                </Carousel>
-            </div>
-            <div className="google_auth">
-                <GoogleLogin
-                    clientId="658977310896-knrl3gka66fldh83dao2rhgbblmd4un9.apps.googleusercontent.com"
-                    buttonText="Login with Google"
-                    // onSuccess={responseGoogle}
-                    // onFailure={responseGoogle}
-                    cookiePolicy={'single_host_origin'}
-                />,
+function LandingPage({ isLogin }) {
+	var items = [
+		{
+			name: "Wallet",
+			description: "A Digital Wallet for the Modern World",
+		},
+		{
+			name: "Expense Tracker",
+			description: "Track all your expenses at on place",
+		},
+	];
 
-            </div>
-        </div>
-    )
+	function Item(props) {
+		return (
+			<Paper width={100}>
+				<div className="paper">
+					<div className="paperinndercontainer">
+						<Typography variant="h1">{props.item.name}</Typography>
+						<Typography variant="h2">{props.item.description}</Typography>
+					</div>
+				</div>
+			</Paper>
+		);
+	}
+
+	//google Auth functtion
+	const signInWithGoogle = () => signInWithPopup(auth, provider);
+	return (
+		<div className="landingpage">
+			<div className="carousel">
+				<Carousel indicators={false}>
+					{items.map((item, i) => (
+						<Item key={i} item={item} />
+					))}
+				</Carousel>
+			</div>
+			<div className="google_auth">
+				<div className="login-buttons">
+					{isLogin ? (
+						<>
+							<h2>{`User ${localStorage.getItem("name")}`}</h2>
+							<Button
+								className="login-provider-button"
+								onClick={() => {
+									signOut(auth);
+									localStorage.removeItem("name");
+									localStorage.removeItem("profile");
+									localStorage.removeItem("useId");
+								}}>
+								Sign Out
+							</Button>
+							<Link to="/main">Main Page</Link>
+						</>
+					) : (
+						<Button
+							className="login-provider-button"
+							onClick={() =>
+								signInWithGoogle()
+									.then((result) => {
+										localStorage.setItem("name", result.user.displayName);
+										localStorage.setItem("profile", result.user.photoURL);
+										localStorage.setItem("useId", result.user.uid);
+									})
+									.catch((err) => {
+										console.log(err);
+									})
+							}
+							startIcon={
+								<img
+									src="https://img.icons8.com/color/48/000000/google-logo.png"
+									alt="google icon"
+								/>
+							}>
+							Sign In
+						</Button>
+					)}
+				</div>
+			</div>
+		</div>
+	);
 }
 
-export default LandingPage
+export default LandingPage;
