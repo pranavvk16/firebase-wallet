@@ -8,7 +8,14 @@ function Popup(props) {
         <span className="close-icon" onClick={props.handleClose}>x</span>
         Your Spendings
         <br />
-        fake data
+        {props.data.map((x, index) => {
+          return (
+            <div key={index}>
+              <span style={{ color: "red", paddingInline: "10px" }}>{x.task}</span>
+              <span style={{ color: "blue", paddingInline: "10px" }}>{x.expense}</span>
+            </div>
+          )
+        })}
       </div>
     </div>
   );

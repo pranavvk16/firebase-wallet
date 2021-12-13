@@ -1,3 +1,5 @@
+
+import Popup from "./Popup";
 import {
 	Button,
 	FormControl,
@@ -5,12 +7,21 @@ import {
 	MenuItem,
 	Select,
 } from "@mui/material";
+import Grid from "@material-ui/core/Grid";
+import DateFnsUtils from "@date-io/date-fns";
+import { MuiPickersUtilsProvider, DatePicker } from "@material-ui/pickers";
+import "date-fns";
+
 import { collection, getDocs } from "firebase/firestore";
 import React, { useState } from "react";
 import { db } from "../firebase";
 import "./ExpenseHistory.css";
 
 function ExpenseHistory() {
+	const togglePopup = () => {
+		setIsOpen(!isOpen);
+	}
+	const [isOpen, setIsOpen] = useState(false);
 	const [isData, setIsData] = useState(true);
 	const [data, setData] = useState([]);
 	const colRef = collection(db, localStorage.getItem("useId"));
@@ -88,7 +99,7 @@ function ExpenseHistory() {
 						onChange={(e) => setMonth(e.target.value)}>
 						{months.map((ele, index) => (
 							<MenuItem key={index} value={index}>
-								{`${ele} (${index + 1})`}
+								{`${ele}`}
 							</MenuItem>
 						))}
 					</Select>
@@ -121,13 +132,17 @@ function ExpenseHistory() {
 			</div>
 			<div className="underline"></div>
 			<div className="his__container">
-				{data.map(({ date, totalExp, todo }) => (
-					<div>
-						<h1>{date}</h1>
-						<h1>{totalExp}</h1>
-						<h1>{todo.length}</h1>
-					</div>
-				))}
+				{data.map(({ date, totalExp, todo }, index) => {
+											{isOpen && <Popup
+												data={todo}
+												handleClose={togglePopup}
+											/>}
+					return (<div key={index}>
+						<span onClick={togglePopup} style={{ color: "red", paddingInline: "10px", cursor: "pointer" }}>{date}</span>
+						<span style={{ color: "blue", paddingInline: "10px" }}>{totalExp}</span>
+						<span style={{ color: "green", paddingInline: "10px" }}>{todo.length}</span>
+					</div>)
+				})}
 			</div>
 		</div>
 	);
