@@ -19,7 +19,7 @@ function Header({ data, colRef }) {
 					Logout
 				</div>
 			</Link>
-			<Link to="/history" style={{ textDecoration: "none" }}>
+			<Link to={`/history`} style={{ textDecoration: "none" }}>
 				Expense History
 			</Link>
 			<div className="balance">

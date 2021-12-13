@@ -44,15 +44,6 @@ function MainPage() {
 	};
 
 	useEffect(() => {
-		// getDocs(collection(colRef, "2021/12")).then((snapshot) => {
-		// 	// const newArr = [];
-		// 	snapshot.forEach((docu) => {
-		// 		// const { task, expense } = docu.data();
-		// 		// newArr.push({ task: task, expense: expense, id: docu.id });
-		// 		console.log(docu.empty);
-		// 	});
-		// });
-		//
 		getDocs(collection(colRef, getDateString(date), "TODO")).then(
 			(snapshot) => {
 				if (snapshot.empty) {
