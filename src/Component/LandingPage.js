@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import Carousel from "react-material-ui-carousel";
 import { Paper, Button, Typography } from "@mui/material";
 import "../App.css";
@@ -17,6 +17,10 @@ function LandingPage({ isLogin }) {
 			name: "Expense Tracker",
 			description: "Track all your expenses at on place",
 		},
+		{
+			name: "Todo List",
+			description: "Track all your todos all day long",
+		}
 	];
 
 	function Item(props) {

@@ -3,19 +3,33 @@ import {
 	FormControl,
 	InputLabel,
 	MenuItem,
+	Paper,
 	Select,
+	Table,
+	TableBody,
+	TableCell,
+	TableContainer,
+	TableHead,
+	TableRow,
 } from "@mui/material";
 import { collection, getDocs } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import { db } from "../firebase";
 import "./ExpenseHistory.css";
+import Popup from "./Popup";
 
 function ExpenseHistory() {
+	const togglePopup = () => {
+		setIsOpen(!isOpen);
+	};
+	const [isOpen, setIsOpen] = useState(false);
+	const [flag, setFlag] = useState(false);
 	const [month, setMonth] = useState(new Date().getMonth());
 	const [year, setYear] = useState(new Date().getFullYear());
 	const [data, setData] = useState([]);
 	const [date, setDate] = useState([]);
 	const colRef = collection(db, localStorage.getItem("useId"));
+	let arrayData = [];
 	const months = [
 		"January",
 		"February",
@@ -36,56 +50,41 @@ function ExpenseHistory() {
 	});
 	// useEffect
 	useEffect(() => {
-		let arrayData = [];
+		arrayData = [];
 		Promise.all([
 			...date.map((ele) =>
-				getDocs(collection(colRef, `${year}/${month + 1}/${ele}`, "TODO"))
+				getDocs(collection(colRef, `${year}/${month + 1}/${ele}`, "TODO")).then(
+					(snapshot) => {
+						if (!snapshot.empty) {
+							console.log();
+							let dbData = {
+								date: `${ele}-${month + 1}-${year}`,
+								totalExp: 0,
+								todo: [],
+							};
+							snapshot.forEach((docu) => {
+								const { task, expense } = docu.data();
+								dbData.todo.push({
+									task: task,
+									expense: expense,
+									id: docu.id,
+								});
+								dbData.totalExp += Number(expense);
+							});
+							return dbData;
+						} else {
+							return;
+						}
+					}
+				)
 			),
 		]).then((result) => {
-			for (let i = 0; i < result.length; i++) {
-				if (!result[i].empty) {
-					let dbData = {
-						date: `${date}-${month + 1}-${year}`,
-						totalExp: 0,
-						todo: [],
-					};
-					result[i].forEach(
-						(docu) => {
-							const { task, expense } = docu.data();
-							dbData.todo.push({ task: task, expense: expense, id: docu.id });
-							dbData.totalExp += Number(expense);
-						},
-						arrayData.push(dbData),
-						setData(arrayData)
-					);
-				}
-			}
+			setData([...result.filter((ele) => ele !== undefined)], setFlag(true));
 		});
-
-		// date.forEach((date) => {
-		// 	getDocs(collection(colRef, `${year}/${month + 1}/${date}`, "TODO")).then(
-		// 		(snapshot) => {
-		// if (!snapshot.empty) {
-		// 	let dbData = {
-		// 		date: `${date}-${month + 1}-${year}`,
-		// 		totalExp: 0,
-		// 		todo: [],
-		// 	};
-		// 	snapshot.forEach((docu) => {
-		// 		const { task, expense } = docu.data();
-		// 		dbData.todo.push({ task: task, expense: expense, id: docu.id });
-		// 		dbData.totalExp += Number(expense);
-		// 	}, arrayData.push(dbData));
-		// }
-		// 	}
-		// );
-		// 	setData(arrayData, console.log(date, data, "------"));
-		// });
 	}, [date]);
-
 	//onClick handel
 	const filterHandel = () => {
-		setData([]);
+		setFlag(false);
 		getDocs(collection(colRef, `${year}/${month + 1}`)).then((snapshot) => {
 			// console.log(snapshot);
 			if (!snapshot.empty) {
@@ -111,7 +110,7 @@ function ExpenseHistory() {
 						onChange={(e) => setMonth(e.target.value)}>
 						{months.map((ele, index) => (
 							<MenuItem key={index} value={index}>
-								{`${ele} (${index + 1})`}
+								{`${ele}`}
 							</MenuItem>
 						))}
 					</Select>
@@ -143,17 +142,43 @@ function ExpenseHistory() {
 				</Button>
 			</div>
 			<div className="underline"></div>
-			<div>
-				{data.map((doc) => {
-					// console.log(doc);
-					return <div key={doc.date}>{doc.date + "  " + doc.totalExp}</div>;
-				})}
+			<div className="his__container">
+				<TableContainer component={Paper}>
+					<Table
+						sx={{ minWidth: 650 }}
+						aria-label="simple table"
+						style={{ padding: "0 1rem" }}>
+						<TableHead>
+							<TableRow>
+								<TableCell>Date</TableCell>
+								<TableCell align="right">Tasks</TableCell>
+								<TableCell align="right">Total Expense</TableCell>
+							</TableRow>
+						</TableHead>
+						<TableBody>
+							{flag &&
+								data.map(({ date, totalExp, todo }, index) => {
+									return (
+										<TableRow
+											style={{ fontSize: "20px", cursor: "pointer" }}
+											onClick={togglePopup}
+											key={index}>
+											<TableCell>{date}</TableCell>
+											<TableCell align="right">{todo.length}</TableCell>
+											<TableCell align="right">{totalExp}</TableCell>
+
+											{isOpen && (
+												<Popup data={todo} handleClose={togglePopup} />
+											)}
+										</TableRow>
+									);
+								})}
+						</TableBody>
+					</Table>
+				</TableContainer>
+				;
 			</div>
 		</div>
 	);
 }
-
 export default ExpenseHistory;
-// date.length > 0 ?  : (
-// 	<h1>Loading</h1>
-// )
