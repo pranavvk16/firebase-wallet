@@ -119,6 +119,7 @@ function MainPage() {
 			<div className="content">
 				<div className="calander">
 					<Calendar
+						id="calander"
 						title="Calander"
 						onChange={(date) => onChangeDate(date)}
 						value={date}

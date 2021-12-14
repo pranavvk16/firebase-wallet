@@ -1,6 +1,9 @@
 :root {
   --gradient: linear-gradient(90deg, rgb(241, 125, 241), #7edfdf);
 }
+*{
+  font-family: 'Poppins', sans-serif;
+}
 .landingpage {
   width: 100vw;
   display: flex;
@@ -83,3 +86,4 @@
   border: 1px solid #999;
   font-size: 20px;
 }
+

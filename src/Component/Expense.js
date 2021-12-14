@@ -2,6 +2,7 @@ import { React, useState } from "react";
 import { Input, Button } from "@mui/material";
 import Popup from "./Popup";
 // import { Picker, MonthBox } from 'react-month-picker'
+import "./mainPage.css";
 
 function Expense({
   date,
@@ -47,7 +48,7 @@ function Expense({
             name="expense"
             onChange={handleChange}
           />
-          <Button sx={{m:2}} variant="contained" type="Submit" disabled={!flag}>
+          <Button sx={{ m: 2 }} variant="contained" type="Submit" disabled={!flag}>
             Add
           </Button>
         </form>
@@ -65,19 +66,20 @@ function Expense({
             data.map((curr) => {
               const { task, expense, id } = curr;
               return (
-                <div key={id}>
-                  <span>{task}</span> :<span>{expense}</span>:
+                <div className="printingExpenses" key={id}>
+                  <span className="taskPrinting">{task}</span  > :<span className="expensePrinting">{expense}</span>:
                   <Button
-                    padding={12}
                     variant="contained"
+                    sx={{ m: 1, p: 0.4 }}
                     onClick={() => updateTask(id, {})}
                   >
                     update
                   </Button>
                   :
                   <Button
-                    padding={12}
                     variant="contained"
+                    color="error"
+                    sx={{ m: 1, p: 0.4 }}
                     onClick={() => deleteTask(id)}
                     disabled={!flag}
                   >
