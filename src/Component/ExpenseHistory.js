@@ -6,17 +6,16 @@ import {
 	Select,
 } from "@mui/material";
 import { collection, getDocs } from "firebase/firestore";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { db } from "../firebase";
 import "./ExpenseHistory.css";
 
 function ExpenseHistory() {
-	const [isData, setIsData] = useState(true);
-	const [data, setData] = useState([]);
-	const colRef = collection(db, localStorage.getItem("useId"));
-
 	const [month, setMonth] = useState(new Date().getMonth());
 	const [year, setYear] = useState(new Date().getFullYear());
+	const [data, setData] = useState([]);
+	const [date, setDate] = useState([]);
+	const colRef = collection(db, localStorage.getItem("useId"));
 	const months = [
 		"January",
 		"February",
@@ -35,43 +34,67 @@ function ExpenseHistory() {
 	let yearArr = new Array(10).fill(0).map((ele, index) => {
 		return currYear - 5 + index;
 	});
-
-	//OnClick functions
-
-	const filterHandel = async () => {
-		setData([]);
-		setIsData(true);
-		let ArrayData = [];
-		let dbDate;
-		await getDocs(collection(colRef, `${year}/${month + 1}`)).then(
-			(snapshot) => {
-				if (snapshot.empty) {
-					setIsData(false);
-				} else {
-					dbDate = snapshot.docs.map((doc) => doc.id).sort((a, b) => a - b);
-				}
-			}
-		);
-		await dbDate.forEach((date) => {
-			getDocs(collection(colRef, `${year}/${month + 1}/${date}`, "TODO")).then(
-				(snapshot) => {
-					if (!snapshot.empty) {
-						let dbData = {
-							date: `${date}-${month + 1}-${year}`,
-							totalExp: 0,
-							todo: [],
-						};
-						snapshot.forEach((docu) => {
+	// useEffect
+	useEffect(() => {
+		let arrayData = [];
+		Promise.all([
+			...date.map((ele) =>
+				getDocs(collection(colRef, `${year}/${month + 1}/${ele}`, "TODO"))
+			),
+		]).then((result) => {
+			for (let i = 0; i < result.length; i++) {
+				if (!result[i].empty) {
+					let dbData = {
+						date: `${date}-${month + 1}-${year}`,
+						totalExp: 0,
+						todo: [],
+					};
+					result[i].forEach(
+						(docu) => {
 							const { task, expense } = docu.data();
 							dbData.todo.push({ task: task, expense: expense, id: docu.id });
 							dbData.totalExp += Number(expense);
-						});
-						ArrayData.push(dbData);
-					}
+						},
+						arrayData.push(dbData),
+						setData(arrayData)
+					);
 				}
-			);
+			}
 		});
-		setData(ArrayData, console.log(data));
+
+		// date.forEach((date) => {
+		// 	getDocs(collection(colRef, `${year}/${month + 1}/${date}`, "TODO")).then(
+		// 		(snapshot) => {
+		// if (!snapshot.empty) {
+		// 	let dbData = {
+		// 		date: `${date}-${month + 1}-${year}`,
+		// 		totalExp: 0,
+		// 		todo: [],
+		// 	};
+		// 	snapshot.forEach((docu) => {
+		// 		const { task, expense } = docu.data();
+		// 		dbData.todo.push({ task: task, expense: expense, id: docu.id });
+		// 		dbData.totalExp += Number(expense);
+		// 	}, arrayData.push(dbData));
+		// }
+		// 	}
+		// );
+		// 	setData(arrayData, console.log(date, data, "------"));
+		// });
+	}, [date]);
+
+	//onClick handel
+	const filterHandel = () => {
+		setData([]);
+		getDocs(collection(colRef, `${year}/${month + 1}`)).then((snapshot) => {
+			// console.log(snapshot);
+			if (!snapshot.empty) {
+				const dbDate = snapshot.docs.map((doc) => doc.id).sort((a, b) => a - b);
+				setDate(dbDate);
+			} else {
+				setDate([]);
+			}
+		});
 	};
 
 	return (
@@ -120,17 +143,17 @@ function ExpenseHistory() {
 				</Button>
 			</div>
 			<div className="underline"></div>
-			<div className="his__container">
-				{data.map(({ date, totalExp, todo }) => (
-					<div>
-						<h1>{date}</h1>
-						<h1>{totalExp}</h1>
-						<h1>{todo.length}</h1>
-					</div>
-				))}
+			<div>
+				{data.map((doc) => {
+					// console.log(doc);
+					return <div key={doc.date}>{doc.date + "  " + doc.totalExp}</div>;
+				})}
 			</div>
 		</div>
 	);
 }
 
 export default ExpenseHistory;
+// date.length > 0 ?  : (
+// 	<h1>Loading</h1>
+// )
