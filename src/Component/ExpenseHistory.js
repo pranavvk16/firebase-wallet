@@ -12,6 +12,8 @@ import {
 	TableHead,
 	TableRow,
 } from "@mui/material";
+import { tableCellClasses } from '@mui/material/TableCell';
+import { styled } from '@mui/material/styles';
 import { collection, getDocs } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import { db } from "../firebase";
@@ -95,7 +97,25 @@ function ExpenseHistory() {
 			}
 		});
 	};
+	const StyledTableCell = styled(TableCell)(({ theme }) => ({
+		[`&.${tableCellClasses.head}`]: {
+			backgroundColor: theme.palette.common.black,
+			color: theme.palette.common.white,
+		},
+		[`&.${tableCellClasses.body}`]: {
+			fontSize: 14,
+		},
+	}));
 
+	const StyledTableRow = styled(TableRow)(({ theme }) => ({
+		'&:nth-of-type(odd)': {
+			backgroundColor: theme.palette.action.hover,
+		},
+		// hide last border
+		'&:last-child td, &:last-child th': {
+			border: 0,
+		},
+	}));
 	return (
 		<div className="history">
 			<div className="filterbar">
@@ -146,31 +166,30 @@ function ExpenseHistory() {
 				<TableContainer component={Paper}>
 					<Table
 						sx={{ minWidth: 650 }}
-						aria-label="simple table"
-						style={{ padding: "0 1rem" }}>
+						aria-label="simple table">
 						<TableHead>
-							<TableRow>
-								<TableCell>Date</TableCell>
-								<TableCell align="right">Tasks</TableCell>
-								<TableCell align="right">Total Expense</TableCell>
+							<TableRow >
+								<StyledTableCell sx={{ fontSize: 25 }} align="center">Date</StyledTableCell>
+								<StyledTableCell sx={{ fontSize: 25 }} align="center">Tasks</StyledTableCell>
+								<StyledTableCell sx={{ fontSize: 25 }} align="center">Total Expense</StyledTableCell>
 							</TableRow>
 						</TableHead>
 						<TableBody>
 							{flag &&
 								data.map(({ date, totalExp, todo }, index) => {
 									return (
-										<TableRow
-											style={{ fontSize: "20px", cursor: "pointer" }}
+										<StyledTableRow
+											style={{ cursor: "pointer", fontSize: "29px" }}
 											onClick={togglePopup}
 											key={index}>
-											<TableCell>{date}</TableCell>
-											<TableCell align="right">{todo.length}</TableCell>
-											<TableCell align="right">{totalExp}</TableCell>
+											<StyledTableCell align="center">{date}</StyledTableCell>
+											<StyledTableCell align="center">{todo.length}</StyledTableCell>
+											<StyledTableCell align="center">{totalExp}</StyledTableCell>
 
 											{isOpen && (
 												<Popup data={todo} handleClose={togglePopup} />
 											)}
-										</TableRow>
+										</StyledTableRow>
 									);
 								})}
 						</TableBody>
