@@ -7,9 +7,9 @@ import {
 	MenuItem,
 	Select,
 } from "@mui/material";
-import Grid from "@material-ui/core/Grid";
-import DateFnsUtils from "@date-io/date-fns";
-import { MuiPickersUtilsProvider, DatePicker } from "@material-ui/pickers";
+// import Grid from "@material-ui/core/Grid";
+// import DateFnsUtils from "@date-io/date-fns";
+// import { MuiPickersUtilsProvider, DatePicker } from "@material-ui/pickers";
 import "date-fns";
 
 import { collection, getDocs } from "firebase/firestore";
@@ -22,7 +22,7 @@ function ExpenseHistory() {
 		setIsOpen(!isOpen);
 	}
 	const [isOpen, setIsOpen] = useState(false);
-	const [isData, setIsData] = useState(true);
+	// const [isData, setIsData] = useState(true);
 	const [data, setData] = useState([]);
 	const colRef = collection(db, localStorage.getItem("useId"));
 
@@ -51,13 +51,13 @@ function ExpenseHistory() {
 
 	const filterHandel = async () => {
 		setData([]);
-		setIsData(true);
+		// setIsData(true);
 		let ArrayData = [];
 		let dbDate;
 		await getDocs(collection(colRef, `${year}/${month + 1}`)).then(
 			(snapshot) => {
 				if (snapshot.empty) {
-					setIsData(false);
+					// setIsData(false);
 				} else {
 					dbDate = snapshot.docs.map((doc) => doc.id).sort((a, b) => a - b);
 				}
@@ -132,17 +132,33 @@ function ExpenseHistory() {
 			</div>
 			<div className="underline"></div>
 			<div className="his__container">
-				{data.map(({ date, totalExp, todo }, index) => {
-											{isOpen && <Popup
-												data={todo}
-												handleClose={togglePopup}
-											/>}
-					return (<div key={index}>
-						<span onClick={togglePopup} style={{ color: "red", paddingInline: "10px", cursor: "pointer" }}>{date}</span>
-						<span style={{ color: "blue", paddingInline: "10px" }}>{totalExp}</span>
-						<span style={{ color: "green", paddingInline: "10px" }}>{todo.length}</span>
-					</div>)
-				})}
+				<table style={{ textAlign: "center", margin: "auto", fontSize: "25px" }}>
+					<tr>
+						<td>Date</td>
+						<td style={{ paddingInline: "50px" }}>Total Expense</td>
+						<td>Total Transactions</td>
+					</tr>
+					{data.map(({ date, totalExp, todo }, index) => {
+						return (
+							// <div >
+
+							// 	<span >On </span>
+							// 	<span style={{ color: "green", paddingInline: "10px" }}>$ </span>
+							// 	<span style={{ color: "blue", paddingInline: "10px" }}></span>
+
+							// </div>
+
+							<tr style={{ fontSize: "20px" }}onClick={togglePopup} key={index}>
+								{isOpen && <Popup
+									data={todo}
+									handleClose={togglePopup}
+								/>}
+								<td style={{ color: "black", paddingInline: "10px", cursor: "pointer" }} >{date}</td>
+								<td>{totalExp}</td>
+								<td>{todo.length}</td>
+							</tr>
+						)
+					})}</table>
 			</div>
 		</div>
 	);

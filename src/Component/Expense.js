@@ -1,7 +1,7 @@
 import { React, useState } from "react";
 import { Input, Button } from "@mui/material";
 import Popup from "./Popup";
-import { Picker, MonthBox } from 'react-month-picker'
+// import { Picker, MonthBox } from 'react-month-picker'
 
 function Expense({
   date,
@@ -47,17 +47,17 @@ function Expense({
             name="expense"
             onChange={handleChange}
           />
-          <Button padding={12} variant="contained" type="Submit" disabled={!flag}>
+          <Button sx={{m:2}} variant="contained" type="Submit" disabled={!flag}>
             Add
           </Button>
         </form>
-        <input
+        {/* <input
           type="button"
           value="Click to Open Popup"
           onClick={togglePopup}
         />{isOpen && <Popup
           handleClose={togglePopup}
-        />}
+        />} */}
         <hr />
         <div className="expense-list">
           {/*displaying the list of todo */}
