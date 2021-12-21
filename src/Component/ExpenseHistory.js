@@ -25,6 +25,7 @@ function ExpenseHistory() {
 		setIsOpen(!isOpen);
 	};
 	const [isOpen, setIsOpen] = useState(false);
+	const [index, getIndex] = useState(false);
 	const [flag, setFlag] = useState(false);
 	const [month, setMonth] = useState(new Date().getMonth());
 	const [year, setYear] = useState(new Date().getFullYear());
@@ -176,19 +177,18 @@ function ExpenseHistory() {
 						</TableHead>
 						<TableBody>
 							{flag &&
-								data.map(({ date, totalExp, todo }, index) => {
+								data.map(({ date, totalExp, todo }, i) => {
 									return (
 										<StyledTableRow
 											style={{ cursor: "pointer", fontSize: "29px" }}
-											onClick={togglePopup}
-											key={index}>
+											onClick={() => {
+												togglePopup();
+												getIndex(i);
+											}}
+											key={i} >
 											<StyledTableCell align="center">{date}</StyledTableCell>
 											<StyledTableCell align="center">{todo.length}</StyledTableCell>
 											<StyledTableCell align="center">{totalExp}</StyledTableCell>
-
-											{isOpen && (
-												<Popup data={todo} handleClose={togglePopup} />
-											)}
 										</StyledTableRow>
 									);
 								})}
@@ -196,8 +196,8 @@ function ExpenseHistory() {
 					</Table>
 				</TableContainer>
 				;
-			</div>
-		</div>
+			</div>{isOpen && <Popup data={data[index].todo} index={index} handleClose={togglePopup} />}
+		</div >
 	);
 }
 export default ExpenseHistory;
